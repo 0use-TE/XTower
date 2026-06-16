@@ -1,9 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace XTower.ViewModels
 {
-    public partial class MainViewModel : ViewModelBase
+    internal partial class MainViewModel : ViewModelBase
     {
+        public MainViewModel(IEnumerable<DockViewModel> dockViewModels)
+        {
+        }
 
     }
 }

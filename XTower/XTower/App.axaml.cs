@@ -22,7 +22,11 @@ namespace XTower
                 .WriteTo.Debug()
                 .CreateLogger();
             services.AddLogging(options=>options.AddSerilog(logger));
-            services.AddMvvmTransient<MainView, MainViewModel>();
+            services.AddMvvmSingleton<MainView, MainViewModel>();
+            services.AddDockTabItem<ProjectView, ProjectViewModel>();
+            services.AddDockTabItem<MonsterView, MonsterViewModel>();
+            services.AddDockTabItem<TurretView, TurretViewModel>();
+            services.AddDockTabItem<MusicView, MusicViewModel>();
         }
 
         public override void CreateShell(IServiceProvider serviceProvider)
