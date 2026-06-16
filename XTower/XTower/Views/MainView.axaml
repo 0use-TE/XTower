@@ -1,0 +1,40 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:XTower.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="XTower.Views.MainView"
+             ViewModelLocator.AutoWireViewModel="True"
+             x:DataType="vm:MainViewModel">
+  <Design.DataContext>
+    <!-- This only sets the DataContext for the previewer in an IDE,
+    to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+    <vm:MainViewModel />
+  </Design.DataContext>
+
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="布局(_L)">
+                
+            </MenuItem>
+            <MenuItem Header="视图(_V)">
+            </MenuItem>
+            <MenuItem Header="工具(_T)"></MenuItem>
+        </Menu>
+        <Border DockPanel.Dock="Top" BorderBrush="LightGray" BorderThickness="0,1,0,0"></Border>
+        <DockShell>
+            <Grid ColumnDefinitions="*,2,2*,2,*">
+                <DockRegion Grid.Column="0"></DockRegion>
+                <DockSplitter Grid.Column="1"></DockSplitter>
+                <Grid Grid.Column="2"  RowDefinitions="5*,2,3*">
+                    <DockRegion Grid.Row="0"></DockRegion>
+                    <DockSplitter Grid.Row="1"></DockSplitter>
+                    <DockRegion Grid.Row="2"></DockRegion>
+                </Grid>
+                <DockSplitter Grid.Column="3"></DockSplitter>
+                <DockRegion Grid.Column="4"></DockRegion>
+            </Grid>
+        </DockShell>
+    </DockPanel>
+</UserControl>

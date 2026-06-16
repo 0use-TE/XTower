@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/Docs/">
+    <File Path="Docs/设计思路.md" />
+  </Folder>
+  <Project Path="XTower/XTower.Android/XTower.Android.csproj">
+    <Deploy />
+  </Project>
+  <Project Path="XTower/XTower.Browser/XTower.Browser.csproj" />
+  <Project Path="XTower/XTower.Desktop/XTower.Desktop.csproj" />
+  <Project Path="XTower/XTower.iOS/XTower.iOS.csproj">
+    <Deploy />
+  </Project>
+  <Project Path="XTower/XTower/XTower.csproj" />
+</Solution>
