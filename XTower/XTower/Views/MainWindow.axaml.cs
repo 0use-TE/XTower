@@ -1,12 +1,8 @@
 using Avalonia.Controls;
 
-namespace XTower.Views
+namespace XTower.Views;
+
+public partial class MainWindow : Window
 {
-    public partial class MainWindow : Window
-    {
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
-    }
+    public MainWindow() => InitializeComponent();
 }

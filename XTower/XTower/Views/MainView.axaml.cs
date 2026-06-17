@@ -1,12 +1,15 @@
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 
-namespace XTower.Views
+namespace XTower.Views;
+
+public partial class MainView : UserControl
 {
-    public partial class MainView : UserControl
+    public MainView()
     {
-        public MainView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+        Loaded += OnLoaded;
     }
+
+    private void OnLoaded(object? sender, RoutedEventArgs e) => Focus();
 }

@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Text.Json.Serialization;
 using XTower.Extensions;
 using XTower.Persistence;
+using XTower.Services;
 
 namespace XTower.ViewModels
 {
@@ -72,18 +73,26 @@ namespace XTower.ViewModels
 
         private readonly IServiceProvider _serviceProvider;
         private readonly IDataPersistence _dataPersistence;
+        private readonly IWorkspaceService _workspaceService;
         private readonly IReadOnlyDictionary<string, DockViewModel> _dockItemsById;
+        private readonly IEditorCommandService _editorCommands;
         private readonly Dictionary<string, DockPosition> _preferredRegions = new(StringComparer.Ordinal);
         private bool _suspendAutoSave;
         private IDisposable? _layoutSubscription;
 
+        public IEditorCommandService Editor => _editorCommands;
+
         public MainViewModel(
             IEnumerable<DockViewModel> dockItems,
             IServiceProvider serviceProvider,
-            IDataPersistence dataPersistence)
+            IDataPersistence dataPersistence,
+            IWorkspaceService workspaceService,
+            IEditorCommandService editorCommands)
         {
             _serviceProvider = serviceProvider;
             _dataPersistence = dataPersistence;
+            _workspaceService = workspaceService;
+            _editorCommands = editorCommands;
             _dockItemsById = dockItems.ToDictionary(x => x.Id);
 
             _suspendAutoSave = true;
@@ -106,6 +115,8 @@ namespace XTower.ViewModels
 
             _suspendAutoSave = true;
 
+            _workspaceService.EnsureInitialized();
+
             var stored = _dataPersistence.Load(LayoutStorageName, MainViewJsonContext.Default.MainViewStorageModel)
                 ?? new MainViewStorageModel();
 
@@ -119,6 +130,7 @@ namespace XTower.ViewModels
                 Application.Current.RequestedThemeVariant = IsDarkMode ? ThemeVariant.Dark : ThemeVariant.Light;
 
             RestoreSelectedTabs(stored);
+            EnsurePinnedProjectPanel();
 
             _suspendAutoSave = false;
 
@@ -172,9 +184,6 @@ namespace XTower.ViewModels
         }
 
         [RelayCommand]
-        private void ToggleProjectView() => Toggle(_serviceProvider.GetRequiredService<ProjectViewModel>());
-
-        [RelayCommand]
         private void ToggleMonsterView() => Toggle(_serviceProvider.GetRequiredService<MonsterViewModel>());
 
         [RelayCommand]
@@ -183,21 +192,45 @@ namespace XTower.ViewModels
         [RelayCommand]
         private void ToggleMusicView() => Toggle(_serviceProvider.GetRequiredService<MusicViewModel>());
 
+        [RelayCommand]
+        private void ToggleLevelView() => Toggle(_serviceProvider.GetRequiredService<LevelViewModel>());
+
+        [RelayCommand]
+        private void ToggleLevelPathsView() => Toggle(_serviceProvider.GetRequiredService<LevelPathsViewModel>());
+
         private void Toggle(DockViewModel item)
         {
+            if (!item.IsClosable)
+            {
+                ShowDockTab(item);
+                return;
+            }
+
             if (!Items.Contains(item))
             {
-                Focus(item);
+                ShowDockTab(item);
                 return;
             }
 
             if (IsSelected(item))
                 Close(item);
             else
-                Focus(item);
+                SelectItem(item);
         }
 
-        private void Focus(DockViewModel item)
+        private void EnsurePinnedProjectPanel()
+        {
+            var project = _serviceProvider.GetRequiredService<ProjectViewModel>();
+            if (!LeftItems.Contains(project))
+            {
+                _preferredRegions[project.Id] = DockPosition.Left;
+                LeftItems.Insert(0, project);
+            }
+
+            LeftSelectedItem ??= project;
+        }
+
+        internal void ShowDockTab(DockViewModel item)
         {
             if (!Items.Contains(item))
                 AddToRegion(item, GetPreferredRegion(item));
@@ -219,6 +252,9 @@ namespace XTower.ViewModels
 
         private void Close(DockViewModel item)
         {
+            if (!item.IsClosable)
+                return;
+
             if (LeftItems.Contains(item))
                 LeftItems.Remove(item);
             else if (CenterTopItems.Contains(item))

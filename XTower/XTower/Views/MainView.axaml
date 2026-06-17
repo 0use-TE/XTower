@@ -6,24 +6,40 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="XTower.Views.MainView"
              ViewModelLocator.AutoWireViewModel="True"
-             x:DataType="vm:MainViewModel">
-  <Design.DataContext>
-    <vm:MainViewModel />
-  </Design.DataContext>
+             x:DataType="vm:MainViewModel"
+             Focusable="True">
+    <Design.DataContext>
+        <vm:MainViewModel />
+    </Design.DataContext>
+
+    <UserControl.KeyBindings>
+        <KeyBinding Gesture="Ctrl+S" Command="{Binding Editor.SaveCommand}" />
+        <KeyBinding Gesture="Ctrl+Z" Command="{Binding Editor.UndoCommand}" />
+        <KeyBinding Gesture="Ctrl+Y" Command="{Binding Editor.RedoCommand}" />
+    </UserControl.KeyBindings>
 
     <DockPanel>
         <Menu DockPanel.Dock="Top">
+            <MenuItem Header="文件(_F)">
+                <MenuItem Command="{Binding Editor.SaveCommand}" Header="保存关卡" InputGesture="Ctrl+S" />
+            </MenuItem>
+            <MenuItem Header="编辑(_E)">
+                <MenuItem Command="{Binding Editor.UndoCommand}" Header="撤销" InputGesture="Ctrl+Z" />
+                <MenuItem Command="{Binding Editor.RedoCommand}" Header="重做" InputGesture="Ctrl+Y" />
+            </MenuItem>
             <MenuItem Header="视图(_V)">
-                <MenuItem Header="项目(_P)" Command="{Binding ToggleProjectViewCommand}" />
-                <MenuItem Header="怪物(_M)" Command="{Binding ToggleMonsterViewCommand}" />
-                <MenuItem Header="炮塔(_T)" Command="{Binding ToggleTurretViewCommand}" />
-                <MenuItem Header="音乐(_M)" Command="{Binding ToggleMusicViewCommand}" />
+                <MenuItem Command="{Binding ToggleLevelViewCommand}" Header="关卡(_L)" />
+                <MenuItem Command="{Binding ToggleLevelPathsViewCommand}" Header="路径(_A)" />
+                <MenuItem Command="{Binding ToggleMonsterViewCommand}" Header="怪物(_M)" />
+                <MenuItem Command="{Binding ToggleTurretViewCommand}" Header="炮塔(_T)" />
+                <MenuItem Command="{Binding ToggleMusicViewCommand}" Header="音乐(_U)" />
             </MenuItem>
-            <MenuItem Header="工具(_T)">
-            </MenuItem>
-            <MenuItem Header="主题(_H)" Command="{Binding SwitchThemeCommand}" />
+            <MenuItem Command="{Binding SwitchThemeCommand}" Header="主题(_H)" />
         </Menu>
-        <Border DockPanel.Dock="Top" BorderBrush="LightGray" BorderThickness="0,1,0,0"></Border>
+        <Border DockPanel.Dock="Top"
+                BorderBrush="LightGray"
+                BorderThickness="0,0,0,1"
+                Height="1" />
         <DockShell>
             <Grid>
                 <Grid.ColumnDefinitions>

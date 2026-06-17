@@ -7,6 +7,7 @@ using Serilog.Formatting.Compact;
 using System;
 using System.IO;
 using XTower.Persistence;
+using XTower.Services;
 using XTower.ViewModels;
 using XTower.Views;
 
@@ -38,9 +39,19 @@ namespace XTower
 
             services.AddLogging(options => options.AddSerilog(logger));
             services.AddSingleton<IDataPersistence, DataPersistence>();
+            services.AddSingleton<IEditorStateService, EditorStateService>();
+            services.AddSingleton<IWorkspaceService, WorkspaceService>();
+            services.AddSingleton<IContentStore, ContentStore>();
+            services.AddSingleton<ILevelEditorSession, LevelEditorSession>();
+            services.AddSingleton<IDockNavigationService, DockNavigationService>();
+
+            services.AddSingleton<EditorCommandService>();
+            services.AddSingleton<IEditorCommandService>(sp => sp.GetRequiredService<EditorCommandService>());
 
             services.AddMvvmSingleton<MainView, MainViewModel>();
             services.AddDockTabItem<ProjectView, ProjectViewModel>();
+            services.AddDockTabItem<LevelView, LevelViewModel>();
+            services.AddDockTabItem<LevelPathsView, LevelPathsViewModel>();
             services.AddDockTabItem<MonsterView, MonsterViewModel>();
             services.AddDockTabItem<TurretView, TurretViewModel>();
             services.AddDockTabItem<MusicView, MusicViewModel>();

@@ -1,0 +1,123 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodels="using:XTower.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="520" d:DesignHeight="360"
+             x:Class="XTower.Views.LevelPathsView"
+             ViewModelLocator.AutoWireViewModel="true"
+             x:DataType="viewmodels:LevelPathsViewModel">
+    <Grid Margin="8" ColumnDefinitions="*,Auto,*">
+        <!-- 路径列表 -->
+        <DockPanel Grid.Column="0">
+            <StackPanel DockPanel.Dock="Top" Margin="0,0,0,8" Spacing="6">
+                <TextBlock FontWeight="SemiBold" Opacity="0.9" Text="路径" />
+                <WrapPanel Orientation="Horizontal">
+                    <Button Margin="0,0,8,0"
+                            Command="{Binding AddPathCommand}"
+                            Content="新建"
+                            IsEnabled="{Binding HasLevel}" />
+                    <Button Margin="0,0,8,0"
+                            Command="{Binding DeletePathCommand}"
+                            Content="删除"
+                            IsEnabled="{Binding CanDeletePath}" />
+                    <Button Command="{Binding ClearPathCommand}"
+                            Content="清空"
+                            IsEnabled="{Binding HasSelectedPath}" />
+                </WrapPanel>
+            </StackPanel>
+            <Border DockPanel.Dock="Top"
+                    Margin="0,0,0,8"
+                    Height="1"
+                    Background="LightGray" />
+            <ListBox IsEnabled="{Binding HasLevel}"
+                     ItemsSource="{Binding Paths}"
+                     SelectedItem="{Binding SelectedPath}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="viewmodels:PathListItemViewModel">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <Border Width="12" Height="12" CornerRadius="2" Background="{Binding Color}" />
+                            <TextBlock VerticalAlignment="Center" Text="{Binding Display}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+
+        <!-- 竖向分隔 -->
+        <Border Grid.Column="1"
+                Margin="12,0"
+                Width="1"
+                Background="LightGray" />
+
+        <!-- 路径点 -->
+        <DockPanel Grid.Column="2" IsEnabled="{Binding HasSelectedPath}">
+            <StackPanel DockPanel.Dock="Top" Margin="0,0,0,8" Spacing="6">
+                <TextBlock FontWeight="SemiBold" Opacity="0.9" Text="路径点" />
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Border Width="14" Height="14" CornerRadius="2" Background="{Binding SelectedPathColor}" />
+                    <TextBlock VerticalAlignment="Center" Text="{Binding SelectedPathName}" />
+                </StackPanel>
+                <Button HorizontalAlignment="Left"
+                        Command="{Binding AddWaypointCommand}"
+                        Content="添加点"
+                        IsEnabled="{Binding HasSelectedPath}" />
+            </StackPanel>
+
+            <Border DockPanel.Dock="Top"
+                    Margin="0,0,0,8"
+                    Height="1"
+                    Background="LightGray" />
+
+            <Grid DockPanel.Dock="Top"
+                  Margin="0,0,0,4"
+                  ColumnDefinitions="28,Auto,*,Auto,*,Auto"
+                  ColumnSpacing="4">
+                <TextBlock Grid.Column="0" Opacity="0.6" Text="#" />
+                <TextBlock Grid.Column="1" Margin="0,0,4,0" Opacity="0.6" Text="X" />
+                <TextBlock Grid.Column="3" Margin="8,0,4,0" Opacity="0.6" Text="Y" />
+            </Grid>
+
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding SelectedPathWaypoints}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="viewmodels:WaypointListItemViewModel">
+                            <Grid Margin="0,2"
+                                  ColumnDefinitions="28,Auto,*,Auto,*,Auto"
+                                  ColumnSpacing="4">
+                                <TextBlock Grid.Column="0"
+                                           VerticalAlignment="Center"
+                                           Opacity="0.85"
+                                           Text="{Binding IndexLabel}" />
+                                <TextBlock Grid.Column="1"
+                                           Margin="0,0,4,0"
+                                           VerticalAlignment="Center"
+                                           Opacity="0.6"
+                                           Text="X" />
+                                <TextBox Grid.Column="2"
+                                         MinWidth="52"
+                                         Text="{Binding X}" />
+                                <TextBlock Grid.Column="3"
+                                           Margin="8,0,4,0"
+                                           VerticalAlignment="Center"
+                                           Opacity="0.6"
+                                           Text="Y" />
+                                <TextBox Grid.Column="4"
+                                         MinWidth="52"
+                                         Text="{Binding Y}" />
+                                <Button Grid.Column="5"
+                                        Margin="4,0,0,0"
+                                        Padding="6,2"
+                                        VerticalAlignment="Center"
+                                        Command="{Binding $parent[UserControl].((viewmodels:LevelPathsViewModel)DataContext).RemoveWaypointCommand}"
+                                        CommandParameter="{Binding}"
+                                        Content="×"
+                                        ToolTip.Tip="删除点" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </DockPanel>
+    </Grid>
+</UserControl>

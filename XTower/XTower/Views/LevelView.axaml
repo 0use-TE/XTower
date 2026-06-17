@@ -1,0 +1,39 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodels="using:XTower.ViewModels"
+             xmlns:controls="using:XTower.Controls"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+             x:Class="XTower.Views.LevelView"
+             ViewModelLocator.AutoWireViewModel="true"
+             x:DataType="viewmodels:LevelViewModel"
+             Focusable="True">
+    <UserControl.KeyBindings>
+        <KeyBinding Gesture="Ctrl+S" Command="{Binding SaveLevelCommand}" />
+        <KeyBinding Gesture="Ctrl+Z" Command="{Binding UndoPathCommand}" />
+        <KeyBinding Gesture="Ctrl+Y" Command="{Binding RedoPathCommand}" />
+    </UserControl.KeyBindings>
+
+    <DockPanel>
+        <Border DockPanel.Dock="Top"
+                Padding="8,6"
+                BorderBrush="LightGray"
+                BorderThickness="0,0,0,1">
+            <CheckBox Content="路径模式（点击网格添加路径点）" IsChecked="{Binding IsPathMode}" />
+        </Border>
+
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <controls:LevelCanvasControl x:Name="LevelCanvas"
+                                         IsVisible="{Binding HasLevel}"
+                                         BackgroundImage="{Binding BackgroundImage}"
+                                         CellSize="{Binding CellSize}"
+                                         Columns="{Binding Columns}"
+                                         IsPathMode="{Binding IsPathMode}"
+                                         Paths="{Binding PathLayers}"
+                                         Rows="{Binding Rows}"
+                                         Height="{Binding CanvasHeight}"
+                                         Width="{Binding CanvasWidth}" />
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

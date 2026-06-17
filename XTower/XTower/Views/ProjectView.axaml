@@ -3,10 +3,80 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewmodels="using:XTower.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="650"
+             mc:Ignorable="d" d:DesignWidth="280" d:DesignHeight="700"
              x:Class="XTower.Views.ProjectView"
              ViewModelLocator.AutoWireViewModel="true"
              x:DataType="viewmodels:ProjectViewModel">
-    <StackPanel Spacing="4">
-    </StackPanel>
+    <DockPanel Margin="8">
+        <StackPanel DockPanel.Dock="Top" Spacing="8">
+            <TextBlock FontWeight="SemiBold" Text="工作区" />
+            <TextBlock Text="{Binding WorkspacePath}" TextWrapping="Wrap" Opacity="0.75" FontSize="12" />
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <Button Content="打开" Command="{Binding OpenWorkspaceCommand}" />
+                <Button Content="刷新" Command="{Binding RefreshCommand}" />
+            </StackPanel>
+            <Border Height="1" Background="LightGray" />
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <TextBox MinWidth="80" PlaceholderText="关卡 ID" Text="{Binding NewLevelId}" />
+                <Button Content="创建" Command="{Binding CreateLevelCommand}" />
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Bottom" Spacing="8">
+            <Border Height="1" Background="LightGray" />
+            <StackPanel Spacing="4">
+                <TextBlock FontWeight="SemiBold" Text="当前编辑" />
+                <TextBlock Opacity="0.85" Text="{Binding EditorStatus}" TextWrapping="Wrap" />
+            </StackPanel>
+            <Border Height="1" Background="LightGray" />
+            <TextBlock FontWeight="SemiBold" Text="关卡属性" />
+            <Grid ColumnDefinitions="Auto,*"
+                  RowDefinitions="Auto,Auto,Auto,Auto"
+                  ColumnSpacing="8"
+                  IsEnabled="{Binding HasSelectedLevel}"
+                  RowSpacing="6">
+                <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Text="列" />
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding LevelColumns}" />
+
+                <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Text="行" />
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding LevelRows}" />
+
+                <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Text="单元格" />
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding LevelCellSize}" />
+
+                <TextBlock Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Text="背景" />
+                <TextBlock Grid.Row="3"
+                           Grid.Column="1"
+                           VerticalAlignment="Center"
+                           Text="{Binding LevelBackground}"
+                           TextTrimming="CharacterEllipsis"
+                           ToolTip.Tip="{Binding LevelBackground}" />
+            </Grid>
+            <Border Height="1" Background="LightGray" />
+            <Button HorizontalAlignment="Left"
+                    Command="{Binding ImportBackgroundCommand}"
+                    Content="导入背景"
+                    IsEnabled="{Binding HasSelectedLevel}" />
+            <Button HorizontalAlignment="Stretch"
+                    Command="{Binding DeleteLevelCommand}"
+                    Content="删除关卡"
+                    IsEnabled="{Binding HasSelectedLevel}" />
+        </StackPanel>
+
+        <DockPanel>
+            <TextBlock DockPanel.Dock="Top" Margin="0,0,0,6" FontWeight="SemiBold" Text="关卡" />
+            <Border DockPanel.Dock="Top"
+                    Margin="0,0,0,8"
+                    Height="1"
+                    Background="LightGray" />
+            <ListBox ItemsSource="{Binding Levels}"
+                     SelectedItem="{Binding SelectedLevel}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="viewmodels:LevelItemViewModel">
+                        <TextBlock Text="{Binding Title}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+    </DockPanel>
 </UserControl>
