@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace XTower.ViewModels
+﻿namespace XTower.ViewModels
 {
-    internal class TurretViewModel : DockViewModel
+    internal partial class TurretViewModel : DockViewModel
     {
-        public override string Id => throw new NotImplementedException();
+        public override string Id => "turret";
 
-        public override string Header => throw new NotImplementedException();
+        public override string Header => "炮塔";
 
-        public override DockPosition DockPosition => throw new NotImplementedException();
+        public override DockPosition DockPosition => DockPosition.Right;
     }
 }

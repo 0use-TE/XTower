@@ -2,6 +2,9 @@
   <Folder Name="/Docs/">
     <File Path="Docs/设计思路.md" />
   </Folder>
+  <Folder Name="/解决方案项/">
+    <File Path="XTower/Directory.Packages.props" />
+  </Folder>
   <Project Path="XTower/XTower.Android/XTower.Android.csproj">
     <Deploy />
   </Project>

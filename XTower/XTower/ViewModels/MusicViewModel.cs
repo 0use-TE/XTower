@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace XTower.ViewModels
+﻿namespace XTower.ViewModels
 {
-    internal class MusicViewModel : DockViewModel
+    internal partial class MusicViewModel : DockViewModel
     {
-        public override string Id => throw new NotImplementedException();
+        public override string Id => "music";
 
-        public override string Header => throw new NotImplementedException();
+        public override string Header => "音乐";
 
-        public override DockPosition DockPosition => throw new NotImplementedException();
+        public override DockPosition DockPosition => DockPosition.Right;
     }
 }

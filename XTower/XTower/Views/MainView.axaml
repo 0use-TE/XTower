@@ -8,32 +8,55 @@
              ViewModelLocator.AutoWireViewModel="True"
              x:DataType="vm:MainViewModel">
   <Design.DataContext>
-    <!-- This only sets the DataContext for the previewer in an IDE,
-    to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
     <vm:MainViewModel />
   </Design.DataContext>
 
     <DockPanel>
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="布局(_L)">
-                
-            </MenuItem>
             <MenuItem Header="视图(_V)">
+                <MenuItem Header="项目(_P)" Command="{Binding ToggleProjectViewCommand}" />
+                <MenuItem Header="怪物(_M)" Command="{Binding ToggleMonsterViewCommand}" />
+                <MenuItem Header="炮塔(_T)" Command="{Binding ToggleTurretViewCommand}" />
+                <MenuItem Header="音乐(_M)" Command="{Binding ToggleMusicViewCommand}" />
             </MenuItem>
-            <MenuItem Header="工具(_T)"></MenuItem>
+            <MenuItem Header="工具(_T)">
+            </MenuItem>
+            <MenuItem Header="主题(_H)" Command="{Binding SwitchThemeCommand}" />
         </Menu>
         <Border DockPanel.Dock="Top" BorderBrush="LightGray" BorderThickness="0,1,0,0"></Border>
         <DockShell>
-            <Grid ColumnDefinitions="*,2,2*,2,*">
-                <DockRegion Grid.Column="0"></DockRegion>
-                <DockSplitter Grid.Column="1"></DockSplitter>
-                <Grid Grid.Column="2"  RowDefinitions="5*,2,3*">
-                    <DockRegion Grid.Row="0"></DockRegion>
-                    <DockSplitter Grid.Row="1"></DockSplitter>
-                    <DockRegion Grid.Row="2"></DockRegion>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{Binding LeftGridLength, Mode=TwoWay}" />
+                    <ColumnDefinition Width="{Binding LeftSplitterColumnWidth, Mode=TwoWay}" />
+                    <ColumnDefinition Width="{Binding CenterColumnWidth, Mode=TwoWay}" />
+                    <ColumnDefinition Width="{Binding RightSplitterColumnWidth, Mode=TwoWay}" />
+                    <ColumnDefinition Width="{Binding RightGridLength, Mode=TwoWay}" />
+                </Grid.ColumnDefinitions>
+
+                <DockRegion Grid.Column="0"
+                            ItemsSource="{Binding LeftItems}"
+                            SelectedItem="{Binding LeftSelectedItem}" />
+                <DockSplitter Grid.Column="1" />
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="{Binding CenterTopGridLength, Mode=TwoWay}" />
+                        <RowDefinition Height="{Binding CenterHSplitterRowHeight, Mode=TwoWay}" />
+                        <RowDefinition Height="{Binding CenterBottomGridLength, Mode=TwoWay}" />
+                    </Grid.RowDefinitions>
+
+                    <DockRegion Grid.Row="0"
+                                ItemsSource="{Binding CenterTopItems}"
+                                SelectedItem="{Binding CenterTopSelectedItem}" />
+                    <DockSplitter Grid.Row="1" />
+                    <DockRegion Grid.Row="2"
+                                ItemsSource="{Binding CenterBottomItems}"
+                                SelectedItem="{Binding CenterBottomSelectedItem}" />
                 </Grid>
-                <DockSplitter Grid.Column="3"></DockSplitter>
-                <DockRegion Grid.Column="4"></DockRegion>
+                <DockSplitter Grid.Column="3" />
+                <DockRegion Grid.Column="4"
+                            ItemsSource="{Binding RightItems}"
+                            SelectedItem="{Binding RightSelectedItem}" />
             </Grid>
         </DockShell>
     </DockPanel>

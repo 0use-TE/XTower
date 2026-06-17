@@ -31,7 +31,7 @@ namespace XTower.ViewModels
         public abstract string Id { get; }
         public abstract string Header { get; }
         public abstract DockPosition DockPosition { get; }
-        public bool ReuseSurface { get; }
-        public bool IsClosable { get; }
+        public virtual bool ReuseSurface => false;
+        public virtual bool IsClosable => true;
     }
 }

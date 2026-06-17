@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace XTower.ViewModels
+﻿namespace XTower.ViewModels
 {
     internal partial class ProjectViewModel : DockViewModel
     {
-        public override string Id => throw new NotImplementedException();
+        public override string Id => "project";
 
-        public override string Header => throw new NotImplementedException();
+        public override string Header => "项目";
 
-        public override DockPosition DockPosition => throw new NotImplementedException();
+        public override DockPosition DockPosition => DockPosition.Left;
     }
 }
